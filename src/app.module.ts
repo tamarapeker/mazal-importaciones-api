@@ -1,20 +1,26 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
+import { SubcategoriesModule } from './subcategories/subcategories.module';
+import { ConfigModule } from '@nestjs/config';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: '172.17.150.131',
-      port: 53040,
-      database: 'c1950410_mazaldb',
-      username: 'c1950410_mazaldb',
-      password: 'zake38weVU',
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      database: process.env.DB_NAME,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true, //no se usa en true en prod
     }),
     CategoriesModule,
+    SubcategoriesModule,
+    ProductsModule,
   ],
   controllers: [],
   providers: [],
